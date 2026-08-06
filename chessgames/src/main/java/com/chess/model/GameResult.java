@@ -1,5 +1,5 @@
 package com.chess.model;
 
-public class GameResult {
-    
+public enum GameResult {
+    WHITE_WIN, BLACK_WIN, DRAW
 }

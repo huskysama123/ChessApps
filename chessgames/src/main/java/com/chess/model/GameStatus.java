@@ -1,5 +1,6 @@
 package com.chess.model;
 
-public class GameStatus {
+public enum GameStatus {
+    ONGOING, CHECK, CHECKMATE, STALEMATE, DRAW
     
 }
