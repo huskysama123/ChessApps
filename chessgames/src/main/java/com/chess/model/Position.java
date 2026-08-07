@@ -30,5 +30,15 @@ public class Position {
     public void setCol(int col) {
         this.col = col;
     }
-    
+    @Override
+    public boolean equals(Object o){
+        if(this==o) return true;
+        if(!(o instanceof Position)) return false;
+        Position p = (Position) o;
+        return row == p.row && col == p.col; 
+    }
+    @Override
+    public int hashCode(){
+        return row * 8 + col;
+    }
 }
