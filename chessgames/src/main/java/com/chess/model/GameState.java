@@ -24,31 +24,31 @@ public class GameState {
         return board;
     }
 
-    public PieceColor getCurrentTurnlColor() {
+    public PieceColor getCurrentTurnColor() {
         return currentTurnColor;
     }
 
-    public void setCurrentTurnlColor(PieceColor currentTurnColor) {
+    public void setCurrentTurnColor(PieceColor currentTurnColor) {
         this.currentTurnColor = currentTurnColor;
     }
 
-    public boolean[] getCaslingRights() {
+    public boolean[] getCastlingRights() {
         return castlingRights;
     }
 
-    public Position getEnPassantTarger() {
+    public Position getEnPassantTarget() {
         return enPassantTarget;
     }
 
-    public void setEnPassantTarger(Position enPassantTarget) {
+    public void setEnPassantTarget(Position enPassantTarget) {
         this.enPassantTarget = enPassantTarget;
     }
 
-    public int getHafMoveClock() {
+    public int getHalfMoveClock() {
         return halfMoveClock;
     }
 
-    public void setHafMoveClock(int halfMoveClock) {
+    public void setHalfMoveClock(int halfMoveClock) {
         this.halfMoveClock = halfMoveClock;
     }
 
