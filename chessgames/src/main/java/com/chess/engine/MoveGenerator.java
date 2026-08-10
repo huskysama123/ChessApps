@@ -10,6 +10,8 @@ import com.chess.model.PieceColor;
 import com.chess.model.PieceType;
 import com.chess.model.Position;
 
+import javafx.geometry.Pos;
+
 public class MoveGenerator {
     public List<Move> generateMoves(Board board, PieceColor color) {
         List<Move> storeAllMove = new ArrayList<>();
@@ -26,25 +28,23 @@ public class MoveGenerator {
                 switch (p.getType()) {
                     case PAWN:
                         // goi lam xu li cua tot
-                        generatePawnMoves();
 
                         break;
                     case KNIGHT:
                         // goi ham xu li cua ngua
-                        generateKnightMoves();
-                    break;
+
+                        break;
                     case BISHOP:
                         // goi ham xu li cua tuong
-                        generateBishopMoves();
+                        storeAllMove.addAll(generateBishopMoves(board, pos, p));
                         break;
                     case KING:
                         // goi ham xu li cua vua
-                        generateKingMoves();
 
                         break;
                     case QUEEN:
                         // goi ham xu li cua hau
-                        generateQueenMoves();
+
                         break;
                     case ROOK:
                         // goi ham xu li cua xe
@@ -64,28 +64,83 @@ public class MoveGenerator {
     private List<Move> generateRookMoves(Board board, Position pos, Piece p) {
         List<Move> store = new ArrayList<>();
 
-        store.addAll(sliding(board, pos, p, -1, 0)); //Len
-        store.addAll(sliding(board, pos, p, 1, 0)); //xuong
+        store.addAll(sliding(board, pos, p, -1, 0)); // Len
+        store.addAll(sliding(board, pos, p, 1, 0)); // xuong
         store.addAll(sliding(board, pos, p, 0, -1)); // trai
         store.addAll(sliding(board, pos, p, 0, 1)); // phai
 
         return store;
     }
 
-    private List<Move> generateBishopMoves() {
-        return null;
+    private List<Move> generateBishopMoves(Board board, Position pos, Piece p) {
+        List<Move> store = new ArrayList<>();
+
+        store.addAll(sliding(board, pos, p, -1, -1)); // Len
+        store.addAll(sliding(board, pos, p, -1, 1)); // xuong
+        store.addAll(sliding(board, pos, p, 1, -1)); // trai
+        store.addAll(sliding(board, pos, p, 1, 1)); // phai
+
+        return store;
     }
 
     private List<Move> generateKingMoves() {
         return null;
     }
 
-    private List<Move> generateKnightMoves() {
-        return null;
+    private List<Move> generateKnightMoves(Board board, Position pos, Piece p) {
+        List<Move> store = new ArrayList<>();
+
+        int[][] direction = {
+                { -2, -1 },
+                { -2, 1 },
+                { -1, -2 },
+                { -1, 2 },
+                { 1, -2 },
+                { 1, 2 },
+                { 2, -1 },
+                { 2, 1 }
+        };
+
+        // Lay vi tri quan ngua
+        int row = pos.getRow();
+        int col = pos.getCol();
+
+        for (int[] direct : direction) {
+            int newRow = row + direct[0];
+            int newCol = col + direct[1];
+
+            // Kiem tra neu ngoai ban co
+            if (newRow < 0 || newRow > 7 ||
+                    newCol < 0 || newCol > 7) {
+                continue;
+            }
+
+            Position to = new Position(newRow, newCol);
+            Piece target = board.getPiece(to);
+            // Kiem tra neu quan co cung mau
+            if (target != null && target.getColor() == p.getColor()) {
+                continue;
+            }
+
+            store.add(new Move(pos, to, p, target, false,
+                    null, false, false));
+
+        }
+        return store;
     }
 
-    private List<Move> generateQueenMoves() {
-        return null;
+    private List<Move> generateQueenMoves(Board board, Position pos, Piece p) {
+        List<Move> store = new ArrayList<>();
+        store.addAll(sliding(board, pos, p, -1, 0)); // Len
+        store.addAll(sliding(board, pos, p, 1, 0)); // xuong
+        store.addAll(sliding(board, pos, p, 0, -1)); // trai
+        store.addAll(sliding(board, pos, p, 0, 1)); // phai
+
+        store.addAll(sliding(board, pos, p, -1, -1)); // Len
+        store.addAll(sliding(board, pos, p, -1, 1)); // xuong
+        store.addAll(sliding(board, pos, p, 1, -1)); // trai
+        store.addAll(sliding(board, pos, p, 1, 1)); // phai
+        return store;
     }
 
     private List<Move> sliding(Board board, Position from,
@@ -100,21 +155,21 @@ public class MoveGenerator {
         while (row >= 0 && row < 8 && col >= 0 && col < 8) {
             Position to = new Position(row, col);
             Piece target = board.getPiece(to);
-            
+
             if (target == null) {
                 store.add(new Move(from, to, p,
                         target, false, null,
                         false, false));
             } else {
-                if(target.getColor() != p.getColor()){
+                if (target.getColor() != p.getColor()) {
                     store.add(new Move(from, to, p, target,
-                         false, null,
-                          false, false));
+                            false, null,
+                            false, false));
                 }
                 break;
             }
-            row+=rowDelta;
-            col+=colDelta;
+            row += rowDelta;
+            col += colDelta;
 
         }
         return store;
